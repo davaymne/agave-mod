@@ -2774,12 +2774,14 @@ impl ReplayStage {
                 info!("new root {}", new_root);
             }
 
+            let node_vote_state = (*vote_account_pubkey, tower.vote_state.clone());
             let mut update_commitment_cache_time = Measure::start("update_commitment_cache");
 
             Self::update_commitment_cache(
                 bank.clone(),
                 bank_forks.read().unwrap().root(),
                 progress.get_fork_stats(bank.slot()).unwrap().total_stake,
+                node_vote_state,
                 lockouts_sender,
             );
             update_commitment_cache_time.stop();
@@ -3074,14 +3076,14 @@ impl ReplayStage {
         bank: Arc<Bank>,
         root: Slot,
         total_stake: Stake,
-        //node_vote_state: (Pubkey, VoteState),
+        node_vote_state: (Pubkey, VoteState),
         lockouts_sender: &Sender<CommitmentAggregationData>,
     ) {
         if let Err(e) = lockouts_sender.send(CommitmentAggregationData::new(
             bank,
             root,
             total_stake,
-            //node_vote_state,
+            node_vote_state,
         )) {
             trace!("lockouts_sender failed: {:?}", e);
         }
@@ -4929,8 +4931,7 @@ pub(crate) mod tests {
         solana_streamer::socket::SocketAddrSpace,
         solana_transaction_status::VersionedTransactionWithStatusMeta,
         solana_vote_program::{
-            //vote_state::{self, VoteStateVersions},
-            vote_state::{VoteStateVersions},
+            vote_state::{self, VoteStateVersions},
             vote_transaction,
         },
         std::{
@@ -5758,7 +5759,7 @@ pub(crate) mod tests {
                 arc_bank.clone(),
                 0,
                 leader_lamports,
-                //node_vote_state,
+                node_vote_state,
                 &lockouts_sender,
             );
             arc_bank.freeze();
