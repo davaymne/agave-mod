@@ -3074,7 +3074,7 @@ impl ReplayStage {
         bank: Arc<Bank>,
         root: Slot,
         total_stake: Stake,
-        node_vote_state: (Pubkey, VoteState),
+        //node_vote_state: (Pubkey, VoteState),
         lockouts_sender: &Sender<CommitmentAggregationData>,
     ) {
         if let Err(e) = lockouts_sender.send(CommitmentAggregationData::new(
@@ -5757,7 +5757,7 @@ pub(crate) mod tests {
                 arc_bank.clone(),
                 0,
                 leader_lamports,
-                node_vote_state,
+                //node_vote_state,
                 &lockouts_sender,
             );
             arc_bank.freeze();
