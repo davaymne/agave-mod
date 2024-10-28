@@ -3081,7 +3081,7 @@ impl ReplayStage {
             bank,
             root,
             total_stake,
-            node_vote_state,
+            //node_vote_state,
         )) {
             trace!("lockouts_sender failed: {:?}", e);
         }
