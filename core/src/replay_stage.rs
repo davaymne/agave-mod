@@ -1223,7 +1223,7 @@ impl ReplayStage {
                     }
 
                     if !vote_banks.is_empty() {
-                        Self::handle_votable_banks(
+                        let _ = Self::handle_votable_banks(
                             &vote_banks,
                             switch_fork_decision,
                             &bank_forks,
