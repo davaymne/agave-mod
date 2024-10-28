@@ -2772,20 +2772,21 @@ impl ReplayStage {
                 //     }
                 // });
                 info!("new root {}", new_root);
+            }
 
-        let mut update_commitment_cache_time = Measure::start("update_commitment_cache");
+            let mut update_commitment_cache_time = Measure::start("update_commitment_cache");
 
-        Self::update_commitment_cache(
-            bank.clone(),
-            bank_forks.read().unwrap().root(),
-            progress.get_fork_stats(bank.slot()).unwrap().total_stake,
-            lockouts_sender,
-        );
-        update_commitment_cache_time.stop();
-        replay_timing.update_commitment_cache_us += update_commitment_cache_time.as_us();
-
+            Self::update_commitment_cache(
+                bank.clone(),
+                bank_forks.read().unwrap().root(),
+                progress.get_fork_stats(bank.slot()).unwrap().total_stake,
+                lockouts_sender,
+            );
+            update_commitment_cache_time.stop();
+            replay_timing.update_commitment_cache_us += update_commitment_cache_time.as_us();
         }
-    }
+
+        info!("voting for window: {:?}", new_slots);
 
         Self::push_vote(
             banks.last().unwrap(),
