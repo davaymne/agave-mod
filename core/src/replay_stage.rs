@@ -2703,6 +2703,7 @@ impl ReplayStage {
                     .unwrap()
                     .get(new_root)
                     .expect("Root bank doesn't exist");
+
                 let mut rooted_banks = root_bank.parents();
                 let oldest_parent = rooted_banks.last().map(|last| last.parent_slot());
                 rooted_banks.push(root_bank.clone());
@@ -2782,6 +2783,8 @@ impl ReplayStage {
         );
         update_commitment_cache_time.stop();
         replay_timing.update_commitment_cache_us += update_commitment_cache_time.as_us();
+
+        }
     }
 
         Self::push_vote(
