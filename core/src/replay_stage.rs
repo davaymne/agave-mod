@@ -4563,6 +4563,7 @@ impl ReplayStage {
         progress: &ProgressMap,
         bank_forks: &RwLock<BankForks>,
     ) -> (Vec<ConfirmedSlot>, Vec<Slot>) {
+        let mut confirmed_forks = vec![];
         let mut mostly_confirmed_forks = vec![];
         for (slot, prog) in progress.iter() {
             if !prog.fork_stats.is_supermajority_confirmed {
