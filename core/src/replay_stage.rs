@@ -2732,7 +2732,7 @@ impl ReplayStage {
                         .unwrap()
                         .highest_super_majority_root(),
                 );
-                Self::handle_new_root(
+                let _ = Self::handle_new_root(
                     new_root,
                     bank_forks,
                     progress,
